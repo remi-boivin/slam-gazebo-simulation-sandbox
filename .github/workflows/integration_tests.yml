@@ -1,0 +1,16 @@
+name: Integration Tests
+
+on: push  
+jobs:
+  integration-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Build Docker image
+      run: docker build -t slam-integration-test:latest .
+
+    - name: Run integration tests
+      run: docker run slam-integration-test:latest pytest-3 /path/to/your/tests

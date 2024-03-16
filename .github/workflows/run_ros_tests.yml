@@ -1,0 +1,13 @@
+name: ROS test runner
+on: [push]
+jobs:
+  run_ros_tests:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the docker stack
+        run: docker build . -t slam-unittest
+      - name: Run unittests
+        run: mkdir test_results && docker run -v ./test_results:/results slam-unittest bash ./scripts/run_and_check_tests.sh
+      - name: Run code coverage
+        run: python3 ./scripts/pre-commit.py
